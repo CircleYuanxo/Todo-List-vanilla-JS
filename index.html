@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+  <meta charset="utf-8">
+  <script src="https://kit.fontawesome.com/09a6328838.js" crossorigin="anonymous"></script>
+  <title>Todo List</title>
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c&display=swap" rel="stylesheet">
+  <style media="screen">
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      width: 60%;
+      margin: 0 auto 50px auto;
+      background-color: #cfdac8;
+      text-align: center;
+      padding: 20px 0;
+      border-radius: 5px;
+      font-family: 'M PLUS Rounded 1c', sans-serif;
+      color: #7c9473;
+      box-shadow: 3px 3px 0px #e8eae6;
+      position: relative;
+    }
+
+    .container:before {
+      content:'';
+      width: 30px;
+      height: 30px;
+      border-radius: 50px;
+      background-color: #007965;
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      box-shadow: 3px 3px 5px #aaaaaa;
+    }
+
+    .container:after {
+      content:'';
+      width: 30px;
+      height: 30px;
+      border-radius: 50px;
+      background-color: #007965;
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      box-shadow: 3px 3px 5px #aaaaaa;
+    }
+
+    h1 {
+      font-size: 3em;
+      margin-bottom: 10px;
+    }
+
+    input {
+      width: 80%;
+      background-color: #cfdac8;
+      border: 2px solid transparent;
+      border-radius: 3px;
+      padding: 5px;
+      font-size: 18px;
+      font-weight: bold;
+      color: #7c9473;
+      transition: background 0.5s;
+    }
+
+    input:hover {
+      background-color: #e7e7de;
+    }
+
+    input::placeholder {
+      color: #9dad7f;
+      font-weight: normal;
+    }
+
+    input:focus {
+      outline: none;
+      border-bottom: 2px solid #7c9473;
+    }
+
+    .todo__container {
+      width: 82%;
+      margin: 20px auto;
+      text-align: left;
+      font-size: 18px;
+    }
+
+    .todo {
+      position: relative;
+      width: 100%;
+      padding: 10px 30px 10px 40px;
+      box-sizing: border-box;
+    }
+
+    .todo:hover {
+      background-color: #bbdfc8;
+    }
+
+    .todo.done {
+      opacity: 0.5;
+    }
+
+    .todo+.todo {
+      margin-top: 10px;
+    }
+
+    .todo>div {
+      display: inline-block;
+      word-break: break-all;
+    }
+
+    .todo span {
+      font-size: 20px;
+    }
+
+    .todo span:nth-child(1) {
+      position: absolute;
+      left: 10px;
+      margin-right: 5px;
+      cursor: pointer;
+    }
+
+    .todo span:nth-child(1):before,
+    .todo span:nth-child(3):before,
+    .done span:nth-child(1):before {
+      content:'';
+      opacity: 0;
+      transition: opacity 0.5s 0.3s;
+    }
+
+    .todo span:nth-child(1):hover::before {
+      content: '完成';
+      position: absolute;
+      width: 45px;
+      background-color: #03506f;
+      text-align: center;
+      border-radius: 5px;
+      top: -22px;
+      left: -12px;
+      font-size: 16px;
+      color: #e8eae6;
+      opacity: 1;
+    }
+
+    .done span:nth-child(1):hover::before {
+      content: '未完成';
+      left: -16px;
+      width: 55px;
+      opacity: 1;
+    }
+
+
+    .todo span:nth-child(3) {
+      position: absolute;
+      right: 10px;
+      cursor: pointer;
+    }
+
+    .todo span:nth-child(3):hover::before {
+      content: '刪除';
+      position: absolute;
+      width: 45px;
+      background-color: #03506f;
+      text-align: center;
+      border-radius: 5px;
+      top: -22px;
+      right: -12px;
+      font-size: 16px;
+      color: #e7e7de;
+      opacity: 1;
+    }
+
+    .done div {
+      text-decoration: line-through;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <h1>Todo List</h1>
+    <input placeholder="在此輸入待辦事項(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧" />
+    <div class="todo__container">
+      <div class="todo">
+        <span><i class="btn__status far fa-square"></i></span>
+        <div>
+          Coin Master
+        </div>
+        <span><i class="btn__delete fas fa-times"></i></span>
+      </div>
+      <div class="todo">
+        <span><i class="btn__status far fa-square"></i></span>
+        <div>
+          熊大上菜
+        </div>
+        <span><i class="btn__delete fas fa-times"></i></span>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript">
+
+    function todoContent(value) {
+      return `<span><i class="btn__status far fa-square"></i></span>
+      <div>${value}</div>
+      <span><i class="btn__delete fas fa-times"></i></span>`
+    }
+
+    document.querySelector('input').addEventListener('keydown', function(e) {
+      let todoContainer = document.querySelector('.todo__container')
+      let inputValue = encodeHTML(e.target.value)
+      if (e.key === "Enter") {
+        if (inputValue === '') return
+        let todo = document.createElement('div')
+        todo.classList.add('todo')
+        todo.innerHTML = todoContent(inputValue)
+        todoContainer.prepend(todo)
+        e.target.value = ''
+      }
+    })
+
+    document.querySelector('.todo__container').addEventListener('click', function(e) {
+      let node = e.target
+      if (node.classList.contains('btn__delete')) {
+        let parentNode = node.parentNode
+        while (parentNode) {
+          if (parentNode === document) return
+          if (parentNode.classList.contains('todo')) {
+            parentNode.remove()
+          }
+          parentNode = parentNode.parentNode
+        }
+      }
+
+      if (node.classList.contains('btn__status')) {
+        let todo = node.parentNode.parentNode
+        let icon = node.parentNode
+        if (!todo.classList.contains('done')) {
+          icon.innerHTML = '<i class="btn__status far fa-check-square"></i>'
+          todo.classList.add('done')
+        } else {
+          icon.innerHTML = '<i class="btn__status far fa-square"></i>'
+          todo.classList.remove('done')
+        }
+      }
+    })
+    function encodeHTML(s) {
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+    }
+  </script>
+</body>
+
+</html>
